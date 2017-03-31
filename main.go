@@ -36,9 +36,21 @@ func getWeather() {
 	fmt.Printf("当前天气：%s, %s\n", todayTemp, todayWeather)
 }
 
+func getPM2point5() {
+	defer n.Done()
+	doc, err := goquery.NewDocument("http://aqicn.org/city/beijing/us-embassy/cn/")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	pm := doc.Find("#aqiwgtvalue").First().Text()
+	fmt.Printf("当前PM2.5：%s\n", pm)
+}
+
 func main() {
-	n.Add(2)
+	n.Add(3)
 	go getCarInfo()
 	go getWeather()
+	go getPM2point5()
 	n.Wait()
 }
